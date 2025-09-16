@@ -24,4 +24,4 @@ spring:
 logging:
   level:
     org.liquibase: DEBUG
-    org.springframework.jdbc: DEBUG
+    "[org.springframework.jdbc]": DEBUG
