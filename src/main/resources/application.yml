@@ -14,7 +14,7 @@ spring:
     show-sql: true
     properties:
       "[hibernate]":
-        format_sql: true
+        format-sql: true
         dialect: org.hibernate.dialect.PostgreSQLDialect
   
   liquibase:
@@ -23,5 +23,5 @@ spring:
 
 logging:
   level:
-    org.liquibase: DEBUG
+    "[org.liquibase]": DEBUG
     "[org.springframework.jdbc]": DEBUG
