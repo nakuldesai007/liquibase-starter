@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.20.xsd">
+
+    <changeSet id="002" author="developer">
+        <insert tableName="users">
+            <column name="username">john_doe</column>
+            <column name="email">john.doe@example.com</column>
+            <column name="first_name">John</column>
+            <column name="last_name">Doe</column>
+        </insert>
+        
+        <insert tableName="users">
+            <column name="username">jane_smith</column>
+            <column name="email">jane.smith@example.com</column>
+            <column name="first_name">Jane</column>
+            <column name="last_name">Smith</column>
+        </insert>
+
+        <insert tableName="products">
+            <column name="name">Laptop</column>
+            <column name="description">High-performance laptop for developers</column>
+            <column name="price">1299.99</column>
+            <column name="category">Electronics</column>
+            <column name="stock_quantity">50</column>
+        </insert>
+
+        <insert tableName="products">
+            <column name="name">Mouse</column>
+            <column name="description">Wireless optical mouse</column>
+            <column name="price">29.99</column>
+            <column name="category">Electronics</column>
+            <column name="stock_quantity">100</column>
+        </insert>
+
+        <insert tableName="products">
+            <column name="name">Keyboard</column>
+            <column name="description">Mechanical gaming keyboard</column>
+            <column name="price">89.99</column>
+            <column name="category">Electronics</column>
+            <column name="stock_quantity">75</column>
+        </insert>
+
+        <insert tableName="orders">
+            <column name="user_id">1</column>
+            <column name="status">COMPLETED</column>
+            <column name="total_amount">1329.98</column>
+        </insert>
+
+        <insert tableName="order_items">
+            <column name="order_id">1</column>
+            <column name="product_id">1</column>
+            <column name="quantity">1</column>
+            <column name="unit_price">1299.99</column>
+        </insert>
+
+        <insert tableName="order_items">
+            <column name="order_id">1</column>
+            <column name="product_id">2</column>
+            <column name="quantity">1</column>
+            <column name="unit_price">29.99</column>
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>

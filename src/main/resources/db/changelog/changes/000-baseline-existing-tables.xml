@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.20.xsd">
+
+    <!-- 
+    BASELINE CHANGELOG: This simulates existing tables in production
+    In a real scenario, these tables would already exist and we'd use
+    liquibase:changelogSync to mark them as applied without running the changesets
+    -->
+    
+    <changeSet id="baseline-001" author="system">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="users"/>
+            </not>
+        </preConditions>
+        
+        <comment>Baseline: Create users table (simulating existing production table)</comment>
+        <createTable tableName="users">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="username" type="VARCHAR(50)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="email" type="VARCHAR(100)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="first_name" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_name" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="baseline-002" author="system">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="products"/>
+            </not>
+        </preConditions>
+        
+        <comment>Baseline: Create products table (simulating existing production table)</comment>
+        <createTable tableName="products">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="TEXT"/>
+            <column name="price" type="DECIMAL(10,2)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="category" type="VARCHAR(50)"/>
+            <column name="stock_quantity" type="INT" defaultValueNumeric="0">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="baseline-003" author="system">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="orders"/>
+            </not>
+        </preConditions>
+        
+        <comment>Baseline: Create orders table (simulating existing production table)</comment>
+        <createTable tableName="orders">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="user_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="order_date" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" type="VARCHAR(20)" defaultValue="PENDING">
+                <constraints nullable="false"/>
+            </column>
+            <column name="total_amount" type="DECIMAL(10,2)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="baseline-004" author="system">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="order_items"/>
+            </not>
+        </preConditions>
+        
+        <comment>Baseline: Create order_items table (simulating existing production table)</comment>
+        <createTable tableName="order_items">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="order_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="product_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="quantity" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="unit_price" type="DECIMAL(10,2)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="baseline-005" author="system">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <foreignKeyConstraintExists foreignKeyName="fk_orders_user"/>
+            </not>
+        </preConditions>
+        
+        <comment>Baseline: Add foreign key constraint for orders -> users</comment>
+        <addForeignKeyConstraint baseTableName="orders" baseColumnNames="user_id"
+                                referencedTableName="users" referencedColumnNames="id"
+                                constraintName="fk_orders_user"/>
+    </changeSet>
+
+    <changeSet id="baseline-006" author="system">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <foreignKeyConstraintExists foreignKeyName="fk_order_items_order"/>
+            </not>
+        </preConditions>
+        
+        <comment>Baseline: Add foreign key constraint for order_items -> orders</comment>
+        <addForeignKeyConstraint baseTableName="order_items" baseColumnNames="order_id"
+                                referencedTableName="orders" referencedColumnNames="id"
+                                constraintName="fk_order_items_order"/>
+    </changeSet>
+
+    <changeSet id="baseline-007" author="system">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <foreignKeyConstraintExists foreignKeyName="fk_order_items_product"/>
+            </not>
+        </preConditions>
+        
+        <comment>Baseline: Add foreign key constraint for order_items -> products</comment>
+        <addForeignKeyConstraint baseTableName="order_items" baseColumnNames="product_id"
+                                referencedTableName="products" referencedColumnNames="id"
+                                constraintName="fk_order_items_product"/>
+    </changeSet>
+
+    <!-- Insert some baseline data to simulate existing production data -->
+    <changeSet id="baseline-008" author="system">
+        <comment>Baseline: Insert sample data to simulate existing production data</comment>
+        <insert tableName="users">
+            <column name="username" value="admin"/>
+            <column name="email" value="admin@example.com"/>
+            <column name="first_name" value="System"/>
+            <column name="last_name" value="Administrator"/>
+        </insert>
+        
+        <insert tableName="users">
+            <column name="username" value="john.doe"/>
+            <column name="email" value="john.doe@example.com"/>
+            <column name="first_name" value="John"/>
+            <column name="last_name" value="Doe"/>
+        </insert>
+        
+        <insert tableName="products">
+            <column name="name" value="Laptop"/>
+            <column name="description" value="High-performance laptop"/>
+            <column name="price" value="999.99"/>
+            <column name="category" value="Electronics"/>
+            <column name="stock_quantity" value="10"/>
+        </insert>
+        
+        <insert tableName="products">
+            <column name="name" value="Mouse"/>
+            <column name="description" value="Wireless optical mouse"/>
+            <column name="price" value="29.99"/>
+            <column name="category" value="Electronics"/>
+            <column name="stock_quantity" value="50"/>
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>

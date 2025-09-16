@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.20.xsd">
+
+    <!-- Baseline existing tables (simulating production environment) -->
+    <include file="changes/000-baseline-existing-tables.xml" relativeToChangelogFile="true"/>
+    
+    <!-- Demo updates to existing tables -->
+    <include file="changes/003-demo-table-updates.xml" relativeToChangelogFile="true"/>
+    
+    <!-- Original schema (commented out for demo purposes) -->
+    <!-- <include file="changes/001-initial-schema.xml" relativeToChangelogFile="true"/> -->
+    <!-- <include file="changes/002-sample-data.xml" relativeToChangelogFile="true"/> -->
+
+</databaseChangeLog>

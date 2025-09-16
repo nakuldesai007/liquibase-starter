@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.20.xsd">
+
+    <!-- 
+    DEMO TABLE UPDATES: This demonstrates how to update existing tables
+    after they've been baselined in Liquibase
+    -->
+    
+    <changeSet id="demo-001" author="developer">
+        <comment>Demo: Add phone number column to users table</comment>
+        <addColumn tableName="users">
+            <column name="phone_number" type="VARCHAR(20)">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="demo-002" author="developer">
+        <comment>Demo: Add user profile information</comment>
+        <addColumn tableName="users">
+            <column name="date_of_birth" type="DATE">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
+        
+        <addColumn tableName="users">
+            <column name="address" type="TEXT">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
+        
+        <addColumn tableName="users">
+            <column name="is_active" type="BOOLEAN" defaultValueBoolean="true">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="demo-003" author="developer">
+        <comment>Demo: Add product enhancements</comment>
+        <addColumn tableName="products">
+            <column name="sku" type="VARCHAR(50)">
+                <constraints nullable="true" unique="true"/>
+            </column>
+        </addColumn>
+        
+        <addColumn tableName="products">
+            <column name="weight" type="DECIMAL(8,2)">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
+        
+        <addColumn tableName="products">
+            <column name="is_featured" type="BOOLEAN" defaultValueBoolean="false">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="demo-004" author="developer">
+        <comment>Demo: Add order tracking and notes</comment>
+        <addColumn tableName="orders">
+            <column name="tracking_number" type="VARCHAR(100)">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
+        
+        <addColumn tableName="orders">
+            <column name="shipping_address" type="TEXT">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
+        
+        <addColumn tableName="orders">
+            <column name="notes" type="TEXT">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
+        
+        <addColumn tableName="orders">
+            <column name="shipped_date" type="TIMESTAMP">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="demo-005" author="developer">
+        <comment>Demo: Add discount functionality to order items</comment>
+        <addColumn tableName="order_items">
+            <column name="discount_percentage" type="DECIMAL(5,2)" defaultValueNumeric="0">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+        
+        <addColumn tableName="order_items">
+            <column name="discount_amount" type="DECIMAL(10,2)" defaultValueNumeric="0">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="demo-006" author="developer">
+        <comment>Demo: Create indexes for better performance</comment>
+        <createIndex tableName="users" indexName="idx_users_email">
+            <column name="email"/>
+        </createIndex>
+        
+        <createIndex tableName="users" indexName="idx_users_username">
+            <column name="username"/>
+        </createIndex>
+        
+        <createIndex tableName="products" indexName="idx_products_category">
+            <column name="category"/>
+        </createIndex>
+        
+        <createIndex tableName="products" indexName="idx_products_sku">
+            <column name="sku"/>
+        </createIndex>
+        
+        <createIndex tableName="orders" indexName="idx_orders_user_id">
+            <column name="user_id"/>
+        </createIndex>
+        
+        <createIndex tableName="orders" indexName="idx_orders_status">
+            <column name="status"/>
+        </createIndex>
+        
+        <createIndex tableName="order_items" indexName="idx_order_items_order_id">
+            <column name="order_id"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet id="demo-007" author="developer">
+        <comment>Demo: Add a new table for user preferences</comment>
+        <createTable tableName="user_preferences">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="user_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="preference_key" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="preference_value" type="TEXT">
+                <constraints nullable="true"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        
+        <addForeignKeyConstraint baseTableName="user_preferences" baseColumnNames="user_id"
+                                referencedTableName="users" referencedColumnNames="id"
+                                constraintName="fk_user_preferences_user"/>
+        
+        <createIndex tableName="user_preferences" indexName="idx_user_preferences_user_id">
+            <column name="user_id"/>
+        </createIndex>
+        
+        <createIndex tableName="user_preferences" indexName="idx_user_preferences_key">
+            <column name="preference_key"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet id="demo-008" author="developer">
+        <comment>Demo: Update existing data with new columns</comment>
+        <update tableName="users">
+            <column name="phone_number" value="+1-555-0123"/>
+            <where>username = 'admin'</where>
+        </update>
+        
+        <update tableName="users">
+            <column name="phone_number" value="+1-555-0456"/>
+            <where>username = 'john.doe'</where>
+        </update>
+        
+        <update tableName="products">
+            <column name="sku" value="LAPTOP-001"/>
+            <where>name = 'Laptop'</where>
+        </update>
+        
+        <update tableName="products">
+            <column name="sku" value="MOUSE-001"/>
+            <where>name = 'Mouse'</where>
+        </update>
+        
+        <update tableName="products">
+            <column name="is_featured" valueBoolean="true"/>
+            <where>name = 'Laptop'</where>
+        </update>
+    </changeSet>
+
+    <changeSet id="demo-009" author="developer">
+        <comment>Demo: Insert sample user preferences</comment>
+        <insert tableName="user_preferences">
+            <column name="user_id" valueComputed="(SELECT id FROM users WHERE username = 'admin')"/>
+            <column name="preference_key" value="theme"/>
+            <column name="preference_value" value="dark"/>
+        </insert>
+        
+        <insert tableName="user_preferences">
+            <column name="user_id" valueComputed="(SELECT id FROM users WHERE username = 'admin')"/>
+            <column name="preference_key" value="language"/>
+            <column name="preference_value" value="en"/>
+        </insert>
+        
+        <insert tableName="user_preferences">
+            <column name="user_id" valueComputed="(SELECT id FROM users WHERE username = 'john.doe')"/>
+            <column name="preference_key" value="notifications"/>
+            <column name="preference_value" value="email"/>
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>
