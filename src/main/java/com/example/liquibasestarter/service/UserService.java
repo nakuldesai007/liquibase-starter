@@ -2,7 +2,6 @@ package com.example.liquibasestarter.service;
 
 import com.example.liquibasestarter.entity.User;
 import com.example.liquibasestarter.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,7 +14,6 @@ public class UserService {
     
     private final UserRepository userRepository;
     
-    @Autowired
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
@@ -66,6 +64,10 @@ public class UserService {
         user.setEmail(userDetails.getEmail());
         user.setFirstName(userDetails.getFirstName());
         user.setLastName(userDetails.getLastName());
+        user.setPhoneNumber(userDetails.getPhoneNumber());
+        user.setDateOfBirth(userDetails.getDateOfBirth());
+        user.setAddress(userDetails.getAddress());
+        user.setIsActive(userDetails.getIsActive());
         
         return userRepository.save(user);
     }

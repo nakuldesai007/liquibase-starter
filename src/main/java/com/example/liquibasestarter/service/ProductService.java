@@ -2,7 +2,6 @@ package com.example.liquibasestarter.service;
 
 import com.example.liquibasestarter.entity.Product;
 import com.example.liquibasestarter.repository.ProductRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,7 +15,6 @@ public class ProductService {
     
     private final ProductRepository productRepository;
     
-    @Autowired
     public ProductService(ProductRepository productRepository) {
         this.productRepository = productRepository;
     }
@@ -42,6 +40,9 @@ public class ProductService {
         product.setPrice(productDetails.getPrice());
         product.setCategory(productDetails.getCategory());
         product.setStockQuantity(productDetails.getStockQuantity());
+        product.setSku(productDetails.getSku());
+        product.setWeight(productDetails.getWeight());
+        product.setIsFeatured(productDetails.getIsFeatured());
         
         return productRepository.save(product);
     }

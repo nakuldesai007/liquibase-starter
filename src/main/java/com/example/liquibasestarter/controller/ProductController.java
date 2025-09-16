@@ -3,7 +3,6 @@ package com.example.liquibasestarter.controller;
 import com.example.liquibasestarter.entity.Product;
 import com.example.liquibasestarter.service.ProductService;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +18,6 @@ public class ProductController {
     
     private final ProductService productService;
     
-    @Autowired
     public ProductController(ProductService productService) {
         this.productService = productService;
     }
@@ -39,8 +37,12 @@ public class ProductController {
     
     @PostMapping
     public ResponseEntity<Product> createProduct(@Valid @RequestBody Product product) {
-        Product createdProduct = productService.createProduct(product);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdProduct);
+        try {
+            Product createdProduct = productService.createProduct(product);
+            return ResponseEntity.status(HttpStatus.CREATED).body(createdProduct);
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().build();
+        }
     }
     
     @PutMapping("/{id}")
