@@ -11,6 +11,9 @@
     <!-- Demo updates to existing tables -->
     <include file="changes/003-demo-table-updates.xml" relativeToChangelogFile="true"/>
     
+    <!-- User roles functionality -->
+    <include file="changes/004-user-roles.xml" relativeToChangelogFile="true"/>
+    
     <!-- Original schema (commented out for demo purposes) -->
     <!-- <include file="changes/001-initial-schema.xml" relativeToChangelogFile="true"/> -->
     <!-- <include file="changes/002-sample-data.xml" relativeToChangelogFile="true"/> -->
